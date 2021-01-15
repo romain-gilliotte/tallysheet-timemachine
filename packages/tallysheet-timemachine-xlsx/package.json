@@ -1,0 +1,34 @@
+{
+  "name": "tallysheet-timemachine-xlsx",
+  "version": "0.0.0",
+  "description": "Plugin for tallysheet-timemachine to allow generation and parsing of Excel files",
+  "author": "Romain Gilliotte <rgilliotte@gmail.com>",
+  "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine#readme",
+  "license": "MIT",
+  "main": "lib/tallysheet-timemachine-xlsx.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romain-gilliotte/tallysheet-timemachine.git"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
+  },
+  "dependencies": {
+    "excel4node": "^1.7.2",
+    "xlsx": "^0.16.9"
+  },
+  "peerDependencies": {
+    "tallysheet-timemachine": "~0"
+  }
+}

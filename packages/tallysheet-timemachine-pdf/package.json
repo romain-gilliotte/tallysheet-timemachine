@@ -1,0 +1,33 @@
+{
+  "name": "tallysheet-timemachine-pdf",
+  "version": "0.0.0",
+  "description": "Plugin for tallysheet-timemachine to allow unpacking of PDF files",
+  "author": "Romain Gilliotte <rgilliotte@gmail.com>",
+  "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine#readme",
+  "license": "MIT",
+  "main": "lib/tallysheet-timemachine-pdf.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romain-gilliotte/tallysheet-timemachine.git"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
+  },
+  "dependencies": {
+    "gm": "^1.23.1"
+  },
+  "peerDependencies": {
+    "tallysheet-timemachine": "~0"
+  }
+}

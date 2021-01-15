@@ -54,6 +54,7 @@ $ npm install tallysheet-timemachine        # Mandatory
 $ npm install tallysheet-timemachine-excel  # Excel support
 $ npm install tallysheet-timemachine-paper  # Paper support
 $ npm install tallysheet-timemachine-zip    # Zip file unpacking
+$ npm install tallysheet-timemachine-pdf    # PDF file unpacking
 ```
 
 Typescript autocompletion is supported. Once installed, the main class is available as the index of the package.
