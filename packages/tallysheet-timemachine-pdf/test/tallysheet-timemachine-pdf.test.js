@@ -1,6 +1,6 @@
 'use strict';
 
-const tallysheetTimemachinePdf = require('..');
+const tallysheetTimemachinePdf = require('../src/tallysheet-timemachine-pdf');
 
 describe('tallysheet-timemachine-pdf', () => {
     it('needs tests');

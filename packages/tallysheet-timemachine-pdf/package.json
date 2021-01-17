@@ -27,7 +27,11 @@
   "dependencies": {
     "gm": "^1.23.1"
   },
+  "devDependencies": {
+    "@types/gm": "^1.18.9",
+    "tallysheet-timemachine": "^0.0.0"
+  },
   "peerDependencies": {
-    "tallysheet-timemachine": "~0"
+    "tallysheet-timemachine": "^0.0.0"
   }
 }

@@ -28,6 +28,10 @@
     "adm-zip": "^0.5.1"
   },
   "peerDependencies": {
-    "tallysheet-timemachine": "~0"
+    "tallysheet-timemachine": "^0.0.0"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.4.33",
+    "tallysheet-timemachine": "^0.0.0"
   }
 }

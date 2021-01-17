@@ -33,6 +33,9 @@
     "roboto-fontface": "^0.10.0"
   },
   "peerDependencies": {
-    "tallysheet-timemachine": "~0"
+    "tallysheet-timemachine": "^0.0.0"
+  },
+  "devDependencies": {
+    "tallysheet-timemachine": "^0.0.0"
   }
 }

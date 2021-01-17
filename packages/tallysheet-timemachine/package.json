@@ -32,5 +32,8 @@
   },
   "bugs": {
     "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
+  },
+  "dependencies": {
+    "file-type": "^16.2.0"
   }
 }
