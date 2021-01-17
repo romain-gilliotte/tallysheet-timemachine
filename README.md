@@ -50,7 +50,7 @@ Install only the modules you really need!
 This is specially true if you don't need the paper form support which depends on `opencv`. It will pull several hundred MB of files on your `node_packages` folder.
 
 ```console
-$ npm install tallysheet-timemachine        # Mandatory
+$ npm install tallysheet-timemachine
 $ npm install tallysheet-timemachine-excel  # Excel support
 $ npm install tallysheet-timemachine-paper  # Paper support
 $ npm install tallysheet-timemachine-zip    # Zip file unpacking
@@ -72,12 +72,12 @@ Forms are created with the `TallySheet` class.
 Convenience methods are available to add variables, partitions and elements.
 
 ```javascript
-const ts = new TallySheet(123);
-ts.addSite('1', 'Paris');
-ts.addVariable('1', 'Number of consultations');
-ts.addPartition('1', '1', 'Age');
-ts.addPartitionElement('1', '1', '1', 'Under 12');
-ts.addPartitionElement('1', '1', '2', '12 and more');
+const questionList = new QuestionList('123');
+questionList.addSite('1', 'Paris');
+questionList.addQuestion('1', 'Number of consultations');
+questionList.addDisagregation('1', '1', 'Age');
+questionList.addDisagregationElement('1', '1', '1', 'Under 12');
+questionList.addDisagregationElement('1', '1', '2', '12 and more');
 
 // Will generate the following tally sheet:
 //                             ____________________
@@ -88,7 +88,7 @@ ts.addPartitionElement('1', '1', '2', '12 and more');
 They can also be imported from a POJO object
 
 ```javascript
-const ts = TallySheet.fromObject({
+const questionList = QuestionList.fromObject({
     id: '1',
     sites: [{ id: '1', name: 'Paris' }],
     variables: [
@@ -109,56 +109,62 @@ const ts = TallySheet.fromObject({
 
 ## File Generation
 
-Once a `TallySheet` is created, multiple `Template`s can be derived, for each file format and option.
+Once a `QuestionList` is created, multiple `Form` can be derived, for each file format and option.
 
 ```javascript
 // Create template
-const template = ts.createTemplate('pdf', { orientation: 'portrait', language: 'fr' });
-// [or] ts.render('pdf', { orientation: 'landscape', language: 'en' });
-// [or] ts.render('xlsx', { language: 'en' });
+const form = new PaperForm(questionList, { orientation: 'portrait', language: 'fr' });
+// [or] new PaperForm(questionList, { orientation: 'landscape', language: 'en' });
+// [or] new ExcelForm(questionList, { language: 'en' });
 // [or] ...
 
-fs.writeFileSync('form.pdf', await template.render());
+fs.writeFileSync('form.pdf', await form.render());
 ```
 
-The `Template`s instances contain metadata: they must be serialized and kept to be able to perform later image recognition/parsing once the form is filled.
+The `Form` instances contain metadata: they must be serialized and kept to be able to perform later image recognition/parsing once the form is filled.
 
 ```javascript
-const metadata = JSON.stringify(template.toObject());
-fs.writeFileSync(`formMetadata-${template.id}.json`, metadata);
+const metadata = JSON.stringify(form.toObject());
+fs.writeFileSync(`formMetadata-${form.id}.json`, metadata);
 ```
 
 ## Parsing / Image recognition
 
 ```javascript
-// Extract filled forms from zip files, images or pdf.
+const extractor = new FormExtractor(
+    // Loaded plugins
+    [new PdfFormExtractor(), new ImageFormExtractor(), new XlsxFormExtractor(), new ZipFormExtractor()],
+
+    // Form loader (you are responsible for storing the form between generation and data extraction)
+    templateId => {
+        const templateFile = fs.readFileSync(`formMetadata-${page.templateId}.json`);
+        const template = PaperFormTemplate.fromObject(JSON.parse(templateFile));
+        return template;
+    }
+)
+
+// Load file and search forms inside it.
 const zip = fs.readFileSync('./stackOfFormsPhotosAndExcel.zip');
 
-for await (let page of TallySheet.findForms(zip)) {
+for await (let formData of extractor.process(zip)) {
     // The identifier of the template and the page number are stored in the form
     // (either in the QR-code or in hidden data in the Excel files).
-    page.type;       // "paper" or "excel"
-    page.templateId; // Reference to the template, which helps us perform the OCR.
-    page.pageNo;     // Always 1 for Excel, can be any number for multipage paper forms.
-
-    // With the template which generated the form, let's extract the data
-    // (You are responsible for storing the template somewhere).
-    const templateFile = fs.readFileSync(`formMetadata-${page.templateId}.json`);
-    const template = PaperFormTemplate.fromObject(JSON.parse(templateFile));
-    const entry = await template.processEntry(page);
+    formData.type;     // "paper" or "excel"
+    formData.form;     // Reference to the form, which helps us perform the OCR.
+    formData.pageNo;   // Always 1 for Excel, can be any number for multipage paper forms.
 
     // Access a reprojected image (only for paperforms) or the data directly (only for excel).
-    entry.getImage(); // => Buffer containing the reprojected image.
-    entry.getData();  // => { [variableId]: [1, 2, 3, 4, ...] }
+    formData.getImage(); // => Buffer containing the reprojected image.
+    formData.getData();  // => { [variableId]: [1, 2, 3, 4, ...] }
     
     // We can also iterate variables
-    for (let variable of entry.getVariables()) {
+    for (let variable of formData.getVariables()) {
         // Get the boundaries of the corresponding variable data.
-        entry.getVariableBoundaries(variable.id);
+        formData.getVariableBoundaries(variable.id);
 
         // Same as getImage() and getData() for a given variable.
-        entry.getVariableImage(variable.id); // Get a cropped image of the variable data
-        entry.getVariableData(variable.id);  // Get the actual data
+        formData.getVariableImage(variable.id); // Get a cropped image of the variable data
+        formData.getVariableData(variable.id);  // Get the actual data
     }
 }
 ```
