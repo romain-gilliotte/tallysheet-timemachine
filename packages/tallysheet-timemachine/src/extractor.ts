@@ -12,7 +12,7 @@ export default class FormDataExtractor {
         this.metadataLoader = metadataLoader;
     }
 
-    async *process(buffer: Buffer, mimeType?: string, filename?: string): AsyncGenerator<FormData> {
+    async *process(buffer: Buffer, mimeType?: string, filename?: string): AsyncGenerator<FormData, void, void> {
         const detectedMimeType = await this.guessMimetype(buffer, mimeType, filename);
         
         const plugin = this.plugins.find(p => p.mimeTypes.includes(detectedMimeType));

@@ -1,6 +1,7 @@
 import { ExtractorPlugin, FormData, MetadataLoaderFn } from 'tallysheet-timemachine';
 import xlsx from 'xlsx';
 import ExcelFormData from './form-data';
+import { ExcelMetadata } from './types';
 
 export default class ExcelExtractorPlugin implements ExtractorPlugin {
 

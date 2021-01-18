@@ -9,6 +9,8 @@ export default abstract class Form {
     get questionList(): QuestionList {
         return this._questionList;
     }
+
+    abstract get mimeType(): string;
     
     constructor(questionList: QuestionList) {
         this._questionList = questionList;

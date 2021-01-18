@@ -2,8 +2,9 @@ import cv from 'opencv4nodejs';
 import { ExtractorPlugin, FormData, MetadataLoaderFn } from 'tallysheet-timemachine';
 import PaperFormData from './form-data';
 import { findArucoMarkers } from './landmarks/aruco';
-import { findQrCode } from './landmarks/qr-code';
 import { getPageContour } from './landmarks/page-contours';
+import { findQrCode } from './landmarks/qr-code';
+import { PaperMetadata } from './types';
 
 const MAX_SIZE = 2560;
 

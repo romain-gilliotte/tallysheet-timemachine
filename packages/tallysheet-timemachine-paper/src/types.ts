@@ -1,8 +1,5 @@
-declare module 'aruco-marker';
-declare module 'js-aruco';
-declare module 'pdfmake/src/layoutBuilder';
 
-type Rect = {
+export type Rect = {
     pageNo: number|null,
     x: number,
     y: number,
@@ -10,17 +7,19 @@ type Rect = {
     h: number
 };
 
-type DisagregationMetadata = { id: string, elements: string[] };
+export type DisagregationMetadata = { id: string, elements: string[] };
 
-type QuestionMetadata = {
+export type QuestionMetadata = {
     id: string,
     disagregations: DisagregationMetadata[],
     boundaries: Rect
 };
 
-type PaperMetadata = {
+export type PaperMetadata = {
     questions: QuestionMetadata[];
     orientation: Orientation
 }
 
-type Orientation = 'portrait' | 'landscape';
+export type Orientation = 'portrait' | 'landscape';
+
+export type Language = 'fr' | 'es' | 'en';

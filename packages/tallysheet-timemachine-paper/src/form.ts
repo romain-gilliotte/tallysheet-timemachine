@@ -2,7 +2,8 @@ import ArucoMarker from 'aruco-marker';
 import PdfPrinter from 'pdfmake';
 import LayoutBuilder from 'pdfmake/src/layoutBuilder';
 import { Disagregation, Form, QuestionList } from "tallysheet-timemachine";
-import { Language, Question } from "tallysheet-timemachine/lib/types";
+import { Question } from "tallysheet-timemachine/lib/types";
+import { Language, Orientation, PaperMetadata, Rect } from './types';
 
 const printer = new PdfPrinter({
     Roboto: {
@@ -34,6 +35,10 @@ export default class PaperForm extends Form {
     protected orientation: Orientation;
     protected boundaries: Record<string, Rect>;
     protected pdf: Promise<Buffer>;
+
+    get mimeType(): string {
+        return 'application/pdf';
+    }
 
     constructor(questionList: QuestionList, orientation: Orientation, language: Language) {
         super(questionList);

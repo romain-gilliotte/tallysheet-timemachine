@@ -5,7 +5,8 @@
   "author": "Romain Gilliotte <rgilliotte@gmail.com>",
   "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine#readme",
   "license": "MIT",
-  "main": "lib/tallysheet-timemachine-paper.js",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.js",
   "directories": {
     "lib": "lib",
     "test": "test"

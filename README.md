@@ -157,7 +157,7 @@ for await (let formData of extractor.process(zip)) {
     formData.getImage(); // => Buffer containing the reprojected image.
     formData.getData();  // => { [questionId]: [1, 2, 3, 4, ...] }
     
-    // We can also iterate variables
+    // We can also iterate questions
     for (let variable of formData.getVariables()) {
         // Get the boundaries of the corresponding variable data.
         formData.getVariableBoundaries(variable.id);

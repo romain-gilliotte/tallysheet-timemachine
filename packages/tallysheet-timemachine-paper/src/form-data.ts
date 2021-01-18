@@ -1,5 +1,6 @@
-import { CellValue, FormData } from "tallysheet-timemachine";
 import cv from 'opencv4nodejs';
+import { CellValue, FormData } from "tallysheet-timemachine";
+import { PaperMetadata } from "./types";
 
 export default class PaperFormData extends FormData {
     metadata: PaperMetadata;
@@ -33,10 +34,9 @@ export default class PaperFormData extends FormData {
         throw new Error('Not implemented.');
     }
 
-    async getCellData(variableId: string, disagregationIds: string[]): Promise<CellValue> {
+    async getCellData(questionId: string, disagregationIds: string[]): Promise<CellValue> {
         return {value: NaN, confidence: 0};
     }
-
 
     private encode(image: cv.Mat): Promise<Buffer> {
         return cv.imencodeAsync('.jpg', image, [cv.IMWRITE_JPEG_QUALITY, 60]);

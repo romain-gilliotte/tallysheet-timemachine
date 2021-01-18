@@ -1,14 +1,11 @@
-declare module 'excel4node';
-declare module 'olap-in-memory';
+export type CellAddr = { sheet: string; cell: string; };
 
-type CellAddr = { sheet: string; cell: string; };
+export type DisagregationMetadata = { id: string, elements: string[] };
 
-type DisagregationMetadata = { id: string, elements: string[] };
-
-type QuestionMetadata = {
+export type QuestionMetadata = {
     id: string,
     disagregations: DisagregationMetadata[],
     boundaries: CellAddr[]
 };
 
-type ExcelMetadata = QuestionMetadata[];
+export type ExcelMetadata = QuestionMetadata[];

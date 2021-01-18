@@ -1,7 +1,6 @@
-
-export type CellValue = { value: number, confidence: number };
+import { CellValue } from "./types";
 
 export default abstract class FormData {
-    abstract getCellData(variableId: string, disagregationIds: string[]): Promise<CellValue>;
+    abstract getCellData(questionId: string, disagregationIds: string[]): Promise<CellValue>;
 
 }

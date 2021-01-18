@@ -1,7 +1,5 @@
 import FormData from "./form-data";
-import { MetadataLoaderFn } from "./types";
-
-export type FormDataAntecedant = { buffer: Buffer, mimeType?: string, filename?: string};
+import { FormDataAntecedant, MetadataLoaderFn } from "./types";
 
 export default interface ExtractorPlugin {
     

@@ -2,11 +2,16 @@ import xl from 'excel4node';
 import { TimeDimension } from 'olap-in-memory';
 import { Disagregation, Form, QuestionList } from "tallysheet-timemachine";
 import TimeSlot from 'timeslot-dag';
+import { CellAddr, ExcelMetadata } from './types';
 
 export default class ExcelForm extends Form {
 
     protected wb: any;
     protected boundaries: Record<string, CellAddr[]>;
+
+    get mimeType(): string {
+        return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    }
 
     constructor(questionList: QuestionList) {
         super(questionList);

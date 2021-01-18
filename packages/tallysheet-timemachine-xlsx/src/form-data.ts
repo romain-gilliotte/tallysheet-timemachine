@@ -1,5 +1,6 @@
 import { CellValue, FormData } from 'tallysheet-timemachine';
 import xlsx from 'xlsx';
+import { ExcelMetadata } from './types';
 
 export default class ExcelFormData extends FormData {
     metadata: ExcelMetadata;
