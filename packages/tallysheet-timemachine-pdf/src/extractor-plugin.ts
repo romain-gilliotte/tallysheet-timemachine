@@ -1,5 +1,5 @@
 import gm from 'gm';
-import { ExtractorPlugin, FormAntecedant, FormLoaderFn } from 'tallysheet-timemachine';
+import { ExtractorPlugin, FormDataAntecedant, MetadataLoaderFn } from 'tallysheet-timemachine';
 import { promisify } from 'util';
 
 /**
@@ -11,7 +11,7 @@ export default class PdfExtractorPlugin implements ExtractorPlugin {
 
     mimeTypes: string[] = ['application/pdf'];
 
-    async* process(formLoader: FormLoaderFn, buffer: Buffer, mimeType?: string, filename?: string): AsyncGenerator<FormAntecedant> {
+    async* process(metadataLoader: MetadataLoaderFn, buffer: Buffer, mimeType?: string, filename?: string): AsyncGenerator<FormDataAntecedant> {
         const pdf = gm(buffer, 'file.pdf');
 
         const identify = promisify<gm.ImageInfo>(pdf.identify.bind(pdf));

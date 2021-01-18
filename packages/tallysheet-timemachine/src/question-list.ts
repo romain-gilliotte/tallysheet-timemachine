@@ -1,55 +1,63 @@
-import { Site, Question, Partition, PartitionElement } from "./types";
+import { Site, Question, Disagregation, DisagregationElement } from "./types";
 
 export default class QuestionList {
 
     static fromObject(obj: any): QuestionList {
-        const { id, name, start, end, sites, variables } = obj;
-        return new QuestionList(id, name, start, end, sites, variables);
+        const { title, name, start, end, sites, questions } = obj;
+        return new QuestionList(title, name, start, end, sites, questions);
     }
 
-    id: string;
-    name: string;
+    title: string;
     start: Date;
     end: Date;
     sites: Site[];
     questions: Question[];
     periodicity: string;
     
-    constructor(id: string, name: string, start: Date, end: Date, periodicity: string, sites: Site[] = [], variables: Question[] = []) {
-        this.id = id;
-        this.name = name;
+    constructor(title: string, start: Date, end: Date, periodicity: string, sites: Site[] = [], questions: Question[] = []) {
+        this.title = title;
         this.periodicity = periodicity;
         this.start = start;
         this.end = end;
         this.sites = sites;
-        this.questions = variables;
+        this.questions = questions;
     }
 
     addSite(id: string, name: string): void {
         this.sites.push({id, name});
     }
 
-    addQuestion(id: string, name: string, distribution: number, partitions: Partition[] = []): void {
-        this.questions.push({id, name, distribution, partitions});
+    addQuestion(id: string, name: string, distribution: number, disagregations: Disagregation[] = []): void {
+        this.questions.push({id, name, distribution, disagregations});
     }
 
-    addDisagregation(questionId: string, id: string, name: string, elements: PartitionElement[] = []): void {
-        const variable = this.questions.find(v => v.id == questionId);
+    addDisagregation(questionId: string, id: string, name: string, elements: DisagregationElement[] = []): void {
+        const question = this.questions.find(v => v.id == questionId);
 
-        if (variable)
-            variable.partitions.push({id, name, elements});
+        if (question)
+            question.disagregations.push({id, name, elements});
         else
-            throw new Error("Unknown variable");
+            throw new Error("Unknown question");
     }
 
     addDisagregationElement(questionId: string, disagregationId: string, id: string, name: string): void {
-        const variable = this.questions.find(v => v.id == questionId);
-        const partition = variable?.partitions.find(p => p.id == disagregationId)
+        const disagregation = this.questions
+            .find(v => v.id == questionId)
+            ?.disagregations
+            ?.find(p => p.id == disagregationId);
 
-        if (partition)
-           partition.elements.push({id, name});
+        if (disagregation)
+           disagregation.elements.push({id, name});
         else
-           throw new Error("Unknown partition");
+           throw new Error("Unknown disagregation");
+    }
+
+    getQuestion(questionId: string): Question {
+        const question = this.questions.find(q => q.id == questionId);
+        if (question)
+            return question;
+        else
+            throw new Error('Question not found.');
     }
 
     toObject(): any {

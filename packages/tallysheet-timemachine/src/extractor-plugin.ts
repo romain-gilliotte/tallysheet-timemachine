@@ -1,8 +1,7 @@
-import Form from "./form";
 import FormData from "./form-data";
+import { MetadataLoaderFn } from "./types";
 
-export type FormLoaderFn = (id: string) => Promise<Form>;
-export type FormAntecedant = { buffer: Buffer, mimeType?: string, filename?: string};
+export type FormDataAntecedant = { buffer: Buffer, mimeType?: string, filename?: string};
 
 export default interface ExtractorPlugin {
     
@@ -11,12 +10,5 @@ export default interface ExtractorPlugin {
      */
     mimeTypes: string[];
 
-    /**
-     * 
-     * 
-     * @param formLoader 
-     * @param buffer 
-     * @param mimeType 
-     */
-    process(formLoader: FormLoaderFn, buffer: Buffer, mimeType?: string, filename?: string): AsyncGenerator<FormAntecedant | FormData>;
+    process(metadataLoader: MetadataLoaderFn, buffer: Buffer, mimeType?: string, filename?: string): AsyncGenerator<FormDataAntecedant | FormData>;
 }

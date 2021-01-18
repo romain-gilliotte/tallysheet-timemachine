@@ -35,5 +35,8 @@
   },
   "dependencies": {
     "file-type": "^16.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
   }
 }

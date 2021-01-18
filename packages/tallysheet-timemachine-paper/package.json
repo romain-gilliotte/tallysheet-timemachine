@@ -36,6 +36,7 @@
     "tallysheet-timemachine": "^0.0.0"
   },
   "devDependencies": {
+    "@types/pdfmake": "^0.1.16",
     "tallysheet-timemachine": "^0.0.0"
   }
 }

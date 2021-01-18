@@ -29,7 +29,7 @@ Besides the OCR, which is not supported (only regions are extracted from Paper),
 
 However, it was actually build as a module in Monitool, and needs to be extracted from the main repo: this library is a complete work in progress.
 
-- [x] Extract page from background image, reproject it, and crop it to get variable data. 
+- [x] Extract page from background image, reproject it, and crop it to get question data. 
 - [x] Write README
 - [x] Design public API as doc in the README
 - [x] Move code from monitool as-is
@@ -69,7 +69,7 @@ const TallySheet = require('tallysheet-timemachine'); // CommonJS
 ## Form creation
 
 Forms are created with the `TallySheet` class.
-Convenience methods are available to add variables, partitions and elements.
+Convenience methods are available to add questions, disagregations and elements.
 
 ```javascript
 const questionList = new QuestionList('123');
@@ -91,11 +91,11 @@ They can also be imported from a POJO object
 const questionList = QuestionList.fromObject({
     id: '1',
     sites: [{ id: '1', name: 'Paris' }],
-    variables: [
+    questions: [
         {
             id: '1',
             name: 'Number of consultations'
-            partitions: [
+            disagregations: [
                 {
                     id: '1',
                     name: 'Age'
@@ -155,7 +155,7 @@ for await (let formData of extractor.process(zip)) {
 
     // Access a reprojected image (only for paperforms) or the data directly (only for excel).
     formData.getImage(); // => Buffer containing the reprojected image.
-    formData.getData();  // => { [variableId]: [1, 2, 3, 4, ...] }
+    formData.getData();  // => { [questionId]: [1, 2, 3, 4, ...] }
     
     // We can also iterate variables
     for (let variable of formData.getVariables()) {

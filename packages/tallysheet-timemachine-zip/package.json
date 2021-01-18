@@ -5,7 +5,8 @@
   "author": "Romain Gilliotte <rgilliotte@gmail.com>",
   "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine#readme",
   "license": "ISC",
-  "main": "lib/tallysheet-timemachine-zip.js",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.33",
+    "mocha": "^8.2.1",
     "tallysheet-timemachine": "^0.0.0"
   }
 }

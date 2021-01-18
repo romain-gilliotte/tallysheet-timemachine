@@ -1,12 +1,9 @@
-const cv = require('opencv4nodejs');
+import cv from 'opencv4nodejs';
 
-/**
- *
- * @param {cv.Mat} image
- * @param {(region: cv.Mat, rect: cv.Rectangle) => Promise<void>} handler
- * @returns {void}
- */
-async function slideOnImage(image, handler) {
+type ImgHandlerFn = (region: cv.Mat, rect: cv.Rect) => Promise<boolean>
+
+export async function slideOnImage(image: cv.Mat, handler: ImgHandlerFn): Promise<void> {
+
     for (let scale = 1; scale < 6; ++scale) {
         const slWinSizeW = Math.floor(image.sizes[1] / scale);
         const slWinSizeH = Math.floor(image.sizes[0] / scale);
@@ -24,5 +21,3 @@ async function slideOnImage(image, handler) {
         }
     }
 }
-
-module.exports = { slideOnImage };

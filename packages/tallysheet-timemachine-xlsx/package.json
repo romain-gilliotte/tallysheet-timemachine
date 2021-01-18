@@ -5,7 +5,8 @@
   "author": "Romain Gilliotte <rgilliotte@gmail.com>",
   "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine#readme",
   "license": "MIT",
-  "main": "lib/tallysheet-timemachine-xlsx.js",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -19,7 +20,7 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "mocha"
   },
   "bugs": {
     "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.167",
+    "mocha": "^8.2.1",
     "tallysheet-timemachine": "^0.0.0"
   },
   "peerDependencies": {

@@ -1,4 +1,4 @@
-const cv = require('opencv4nodejs');
+import cv from 'opencv4nodejs';
 
 /**
  * Use Edge detection to find something white-ish, square-ish and using at least 30% of the pixels.
@@ -9,14 +9,11 @@ const cv = require('opencv4nodejs');
  * @see https://bretahajek.com/2017/01/scanning-documents-photos-opencv/
  * @see https://stackoverflow.com/questions/43009923/how-to-complete-close-a-contour-in-python-opencv
  * @see https://stackoverflow.com/questions/8667818/opencv-c-obj-c-detecting-a-sheet-of-paper-square-detection
-
- * @param {cv.Mat} image
- * @returns {cv.Contour}
  */
-async function getPageContour(image) {
-    const minArea = 0.3 * image.sizes[0] * image.sizes[1];
-    let bestArea = minArea;
-    let bestContour = null;
+export async function getPageContour(image: cv.Mat): Promise<cv.Contour | null> {
+    const minArea: number = 0.3 * image.sizes[0] * image.sizes[1];
+    let bestArea: number = minArea;
+    let bestContour: cv.Contour | null = null;
 
     // Try detection on each color channel + the luminence one.
     const channels = [...(await image.splitAsync()), await image.cvtColorAsync(cv.COLOR_BGR2GRAY)];
@@ -44,10 +41,10 @@ async function getPageContour(image) {
 
 /**
  *
- * @param {cv.Mat} image
- * @param {number} sensibility
+ * @param image
+ * @param sensibility
  */
-async function getEdges(image, sensibility = 1) {
+async function getEdges(image: cv.Mat, sensibility: number = 1): Promise<cv.Mat> {
     image = await image.normalizeAsync(0, 255, cv.NORM_MINMAX);
     // image = await image.bilateralFilterAsync(9, 75, 75); // noise removal
     // image = await image.adaptiveThresholdAsync(255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 115, -10);

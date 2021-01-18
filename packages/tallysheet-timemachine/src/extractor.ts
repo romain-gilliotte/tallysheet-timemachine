@@ -1,25 +1,23 @@
 import FileType from 'file-type';
 import ExtractorPlugin from './extractor-plugin';
-import Form from "./form";
 import FormData from './form-data';
+import { MetadataLoaderFn } from './types';
 
-type FormLoaderFn = (id: string) => Promise<Form>;
-
-export default class FormExtractor {
-    protected formLoader: FormLoaderFn;
+export default class FormDataExtractor {
+    protected metadataLoader: MetadataLoaderFn;
     protected plugins: ExtractorPlugin[];
 
-    constructor(plugins: ExtractorPlugin[], formLoader: FormLoaderFn) {
+    constructor(plugins: ExtractorPlugin[], metadataLoader: MetadataLoaderFn) {
         this.plugins = plugins;
-        this.formLoader = formLoader;
+        this.metadataLoader = metadataLoader;
     }
 
-    async *process(buffer: Buffer, userMimeType?: string, filename?: string): AsyncGenerator<FormData> {
-        const mimeType = await this.guessMimetype(buffer, userMimeType, filename);
+    async *process(buffer: Buffer, mimeType?: string, filename?: string): AsyncGenerator<FormData> {
+        const detectedMimeType = await this.guessMimetype(buffer, mimeType, filename);
         
-        const plugin = this.plugins.find(p => p.mimeTypes.includes(mimeType));
+        const plugin = this.plugins.find(p => p.mimeTypes.includes(detectedMimeType));
         if (plugin) {
-            const results = plugin.process(this.formLoader, buffer, mimeType, filename);
+            const results = plugin.process(this.metadataLoader, buffer, detectedMimeType, filename);
 
             for await (let result of results) {
                 if (result instanceof FormData)
@@ -29,7 +27,7 @@ export default class FormExtractor {
             }
         }
         else {
-            console.log(`Skipping ${filename}: no handler registered for mimeType ${mimeType}`);
+            console.log(`Skipping ${filename}: no handler registered for mimeType ${detectedMimeType}`);
         }
     }
 

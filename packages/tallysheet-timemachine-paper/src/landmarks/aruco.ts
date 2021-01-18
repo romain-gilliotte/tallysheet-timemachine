@@ -1,15 +1,10 @@
-const { AR } = require('js-aruco');
-const cv = require('opencv4nodejs');
-const { slideOnImage } = require('./_helper');
+import { AR } from 'js-aruco';
+import cv from 'opencv4nodejs';
+import { slideOnImage } from './_helper';
 
-/**
- *
- * @param {cv.Mat} image
- * @returns {Promise<Record<string, cv.Point2>>}
- */
-async function findArucoMarkers(image) {
+export async function findArucoMarkers(image: cv.Mat): Promise<Record<string, cv.Point2>> {
     const detector = new AR.Detector();
-    const points = {};
+    const points: Record<string, cv.Point2> = {};
 
     // Search in the image.
     await slideOnImage(image, async (region, rect) => {
@@ -60,5 +55,3 @@ async function findArucoMarkers(image) {
 
     return points;
 }
-
-module.exports = { findArucoMarkers };

@@ -1,8 +1,8 @@
-
-import ExtractorPlugin, {FormLoaderFn, FormAntecedant} from './extractor-plugin';
-import Extractor from './extractor';
-import FormData, { CellValue } from './form-data';
+import FormDataExtractor from './extractor';
+import ExtractorPlugin, { FormDataAntecedant } from './extractor-plugin';
 import Form from './form';
+import FormData, { CellValue } from './form-data';
 import QuestionList from './question-list';
+import { Disagregation, MetadataLoaderFn } from './types';
 
-export { CellValue, ExtractorPlugin, Extractor, FormData, Form, QuestionList, FormLoaderFn, FormAntecedant };
+export { CellValue, Disagregation, ExtractorPlugin, FormDataExtractor, FormData, Form, QuestionList, FormDataAntecedant, MetadataLoaderFn };
