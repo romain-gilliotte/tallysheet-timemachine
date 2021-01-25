@@ -1,39 +1,41 @@
 {
-  "name": "tallysheet-timemachine-pdf",
-  "version": "0.0.0",
-  "description": "Plugin for tallysheet-timemachine to allow unpacking of PDF files",
-  "author": "Romain Gilliotte <rgilliotte@gmail.com>",
-  "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine#readme",
-  "license": "MIT",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "files": [
-    "lib"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/romain-gilliotte/tallysheet-timemachine.git"
-  },
-  "scripts": {
-    "tsc": "tsc",
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
-  "bugs": {
-    "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
-  },
-  "dependencies": {
-    "gm": "^1.23.1"
-  },
-  "devDependencies": {
-    "@types/gm": "^1.18.9",
-    "mocha": "^8.2.1",
-    "tallysheet-timemachine": "^0.0.0"
-  },
-  "peerDependencies": {
-    "tallysheet-timemachine": "^0.0.0"
-  }
+    "name": "tallysheet-timemachine-pdf",
+    "version": "0.0.0",
+    "description": "Plugin for tallysheet-timemachine to allow unpacking of PDF files",
+    "author": "Romain Gilliotte <rgilliotte@gmail.com>",
+    "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine#readme",
+    "license": "MIT",
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "files": [
+        "lib"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/romain-gilliotte/tallysheet-timemachine.git"
+    },
+    "scripts": {
+        "doc": "typedoc src/index.ts",
+        "tsc": "tsc",
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
+    },
+    "dependencies": {
+        "gm": "^1.23.1"
+    },
+    "devDependencies": {
+        "@types/gm": "^1.18.9",
+        "mocha": "^8.2.1",
+        "tallysheet-timemachine": "^0.0.0",
+        "typedoc": "^0.20.18"
+    },
+    "peerDependencies": {
+        "tallysheet-timemachine": "^0.0.0"
+    }
 }

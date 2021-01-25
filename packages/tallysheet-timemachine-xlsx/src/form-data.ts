@@ -1,4 +1,4 @@
-import { CellValue, FormData } from 'tallysheet-timemachine';
+import { CellValue, File, FormData } from 'tallysheet-timemachine';
 import xlsx from 'xlsx';
 import { ExcelMetadata } from './types';
 
@@ -6,8 +6,8 @@ export default class ExcelFormData extends FormData {
     metadata: ExcelMetadata;
     ws: xlsx.WorkBook;
 
-    constructor(metadata: ExcelMetadata, ws: xlsx.WorkBook) {
-        super();
+    constructor(file: File, metadata: ExcelMetadata, ws: xlsx.WorkBook) {
+        super(file);
 
         this.metadata = metadata;
         this.ws = ws;
@@ -15,8 +15,7 @@ export default class ExcelFormData extends FormData {
 
     async getCellData(questionId: string, disagregationIds: string[]): Promise<CellValue> {
         const questionMetadata = this.metadata.find(q => q.id == questionId);
-        if (!questionMetadata)
-            throw new Error('Invalid questionId');
+        if (!questionMetadata) throw new Error('Invalid questionId');
 
         const index = disagregationIds.reduce((m: number, id: string, index: number) => {
             const elements = questionMetadata.disagregations[index].elements;
@@ -28,7 +27,7 @@ export default class ExcelFormData extends FormData {
 
         return {
             value: this.ws.Sheets[cellAddress.sheet][cellAddress.cell].v,
-            confidence: 1
+            confidence: 1,
         };
     }
 }

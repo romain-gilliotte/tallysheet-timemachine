@@ -1,11 +1,10 @@
 import xl from 'excel4node';
 import { TimeDimension } from 'olap-in-memory';
-import { Disagregation, Form, QuestionList } from "tallysheet-timemachine";
+import { Disagregation, Form, QuestionList } from 'tallysheet-timemachine';
 import TimeSlot from 'timeslot-dag';
 import { CellAddr, ExcelMetadata } from './types';
 
 export default class ExcelForm extends Form {
-
     protected wb: any;
     protected boundaries: Record<string, CellAddr[]>;
 
@@ -22,7 +21,7 @@ export default class ExcelForm extends Form {
     }
 
     async generateOutput(): Promise<Buffer> {
-        return this.wb.writeToBuffer()
+        return this.wb.writeToBuffer();
     }
 
     async generateMetadata(): Promise<ExcelMetadata> {
@@ -33,16 +32,16 @@ export default class ExcelForm extends Form {
             boundaries: this.boundaries[q.id],
             disagregations: q.disagregations.map(d => ({
                 id: d.id,
-                elements: d.elements.map(e => e.id)
-            }))
-        }))
+                elements: d.elements.map(e => e.id),
+            })),
+        }));
     }
 
     getQuestionBoundaries(questionId: string): CellAddr {
         const boundaries = this.boundaries[questionId];
         return {
             sheet: boundaries[0].sheet,
-            cell: `${boundaries[0].cell}:${boundaries[boundaries.length - 1].cell}`
+            cell: `${boundaries[0].cell}:${boundaries[boundaries.length - 1].cell}`,
         };
     }
 
@@ -73,11 +72,11 @@ export default class ExcelForm extends Form {
 
         const periods = new TimeDimension(
             'time',
-            this.questionList.periodicity, 
-            this.questionList.start, 
+            this.questionList.periodicity,
+            this.questionList.start,
             this.questionList.end
         ).getItems();
-    
+
         const ws = this.wb.addWorksheet('Data Entry');
         this.addMetadata(ws, periods);
         this.addHeader(ws, periods);
@@ -92,17 +91,17 @@ export default class ExcelForm extends Form {
             metadata.cell(1 + index, 2).string(site.id);
             metadata.cell(1 + index, 3).string(site.name);
         });
-    
+
         metadata.cell(1, 4).number(periods.length);
         periods.forEach((period: string, index: number) => {
             const ts = new TimeSlot(period);
             const start = ts.firstDate.toISOString().substring(0, 10);
             const end = ts.lastDate.toISOString().substring(0, 10);
-    
+
             metadata.cell(1 + index, 5).string(period);
             metadata.cell(1 + index, 6).string(`${ts.humanizeValue()} (${start} -> ${end})`);
         });
-    
+
         // Write form id, so that we can find it when importing
         this.boundaries['qr'] = [{ sheet: 'Metadata', cell: 'J1' }];
         metadata.cell(1, 10).string(this.id.toString('base64'));
@@ -168,7 +167,8 @@ export default class ExcelForm extends Form {
             if (question.disagregations.length) {
                 const dataWidth = tblWidth - rowParts.length;
                 const numCells = question.disagregations.reduce(
-                    (m: number, d: Disagregation) => m * d.elements.length, 1
+                    (m: number, d: Disagregation) => m * d.elements.length,
+                    1
                 );
 
                 this.boundaries[question.id] = new Array(numCells);
@@ -177,8 +177,8 @@ export default class ExcelForm extends Form {
                         tableStartRow + colParts.length + Math.floor(i / dataWidth),
                         1 + rowParts.length + (i % dataWidth)
                     );
-                    
-                    this.boundaries[question.id][i] = {sheet: 'Data Entry', cell };
+
+                    this.boundaries[question.id][i] = { sheet: 'Data Entry', cell };
                 }
             } else {
                 const cell = xl.getExcelCellRef(tableStartRow, 1);
@@ -187,7 +187,13 @@ export default class ExcelForm extends Form {
         }
     }
 
-    private addTitlesOnTop(ws: any, disagregations: Disagregation[], startRow: number, startCol: number, index: number = 0): void {
+    private addTitlesOnTop(
+        ws: any,
+        disagregations: Disagregation[],
+        startRow: number,
+        startCol: number,
+        index: number = 0
+    ): void {
         if (index == disagregations.length) return;
 
         const colspan = disagregations.slice(index + 1).reduce((m, d) => m * d.elements.length, 1);
@@ -208,7 +214,13 @@ export default class ExcelForm extends Form {
         }
     }
 
-    private addTitlesOnLeft(ws: any, disagregations: Disagregation[], startRow: number, startCol: number, index: number = 0): void {
+    private addTitlesOnLeft(
+        ws: any,
+        disagregations: Disagregation[],
+        startRow: number,
+        startCol: number,
+        index: number = 0
+    ): void {
         if (index == disagregations.length) return;
 
         const rowspan = disagregations.slice(index + 1).reduce((m, d) => m * d.elements.length, 1);

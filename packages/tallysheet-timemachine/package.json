@@ -1,42 +1,44 @@
 {
-  "name": "tallysheet-timemachine",
-  "version": "0.0.0",
-  "description": "Generate excel and paper forms, and import files and scans to get the data back",
-  "keywords": [
-    "tallysheet",
-    "paper",
-    "excel",
-    "ocr",
-    "parsing",
-    "data collection"
-  ],
-  "author": "Romain Gilliotte <rgilliotte@gmail.com>",
-  "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine",
-  "license": "MIT",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "files": [
-    "lib"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/romain-gilliotte/tallysheet-timemachine.git"
-  },
-  "scripts": {
-    "tsc": "tsc",
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
-  "bugs": {
-    "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
-  },
-  "dependencies": {
-    "file-type": "^16.2.0"
-  },
-  "devDependencies": {
-    "mocha": "^8.2.1"
-  }
+    "name": "tallysheet-timemachine",
+    "version": "0.0.0",
+    "description": "Generate excel and paper forms, and import files and scans to get the data back",
+    "keywords": [
+        "tallysheet",
+        "paper",
+        "excel",
+        "ocr",
+        "parsing",
+        "data collection"
+    ],
+    "author": "Romain Gilliotte <rgilliotte@gmail.com>",
+    "homepage": "https://github.com/romain-gilliotte/tallysheet-timemachine",
+    "license": "MIT",
+    "main": "lib/index.js",
+    "typings": "lib/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "files": [
+        "lib"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/romain-gilliotte/tallysheet-timemachine.git"
+    },
+    "scripts": {
+        "doc": "typedoc src/index.ts",
+        "tsc": "tsc",
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/romain-gilliotte/tallysheet-timemachine/issues"
+    },
+    "dependencies": {
+        "file-type": "^16.2.0"
+    },
+    "devDependencies": {
+        "mocha": "^8.2.1",
+        "typedoc": "^0.20.18"
+    }
 }

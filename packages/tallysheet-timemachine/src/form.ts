@@ -1,4 +1,4 @@
-import QuestionList from "./question-list";
+import QuestionList from './question-list';
 import { Json } from './types';
 
 export default abstract class Form {
@@ -11,14 +11,15 @@ export default abstract class Form {
     }
 
     abstract get mimeType(): string;
-    
+
     constructor(questionList: QuestionList) {
         this._questionList = questionList;
 
         // Generate random ID
         this.id = Buffer.alloc(6);
-        for (let i = 0; i < 6; ++i)
+        for (let i = 0; i < 6; ++i) {
             this.id[i] = 256 * Math.random();
+        }
     }
 
     abstract generateOutput(): Promise<Buffer>;

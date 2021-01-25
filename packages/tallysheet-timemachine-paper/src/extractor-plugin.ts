@@ -1,5 +1,6 @@
 import cv from 'opencv4nodejs';
 import { ExtractorPlugin, FormData, MetadataLoaderFn } from 'tallysheet-timemachine';
+import { File } from 'tallysheet-timemachine/lib/types';
 import PaperFormData from './form-data';
 import { findArucoMarkers } from './landmarks/aruco';
 import { getPageContour } from './landmarks/page-contours';
@@ -9,11 +10,10 @@ import { PaperMetadata } from './types';
 const MAX_SIZE = 2560;
 
 export default class PaperExtractorPlugin implements ExtractorPlugin {
-
     mimeTypes: string[] = ['image/jpeg', 'image/png', 'image/tiff'];
 
-    async* process(metadataLoader: MetadataLoaderFn, buffer: Buffer, mimeType?: string): AsyncGenerator<FormData> {
-        let original = cv.imdecode(buffer, cv.IMREAD_COLOR);
+    async *process(metadataLoader: MetadataLoaderFn, file: File): AsyncGenerator<FormData> {
+        let original = cv.imdecode(file.data, cv.IMREAD_COLOR);
 
         // Resize source image if too big. This hurts feature detection, but otherwise it takes ages.
         // FIXME I suspect opencv to ignore the "INTER_CUBIC" flag
@@ -25,8 +25,10 @@ export default class PaperExtractorPlugin implements ExtractorPlugin {
 
         // Load metadata from QR code & keep relevant page.
         const [qrLandmarks, qrData] = await findQrCode(original);
-        const metadata = await metadataLoader(qrData.slice(0, 6).toString('hex')) as PaperMetadata
-        metadata.questions = metadata.questions.filter(md => 
+        const metadata = (await metadataLoader(
+            qrData.slice(0, 6).toString('hex')
+        )) as PaperMetadata;
+        metadata.questions = metadata.questions.filter(md =>
             [qrData[6], null].includes(md.boundaries.pageNo)
         );
 
@@ -37,23 +39,29 @@ export default class PaperExtractorPlugin implements ExtractorPlugin {
         } else {
             [width, height] = [29.7 * 50, 21.0 * 50];
         }
-    
+
         // Find points in common, find homography, reproject.
         const landmarks = await this.findLandmarks(original, qrLandmarks);
         const targets = this.computeTargets(metadata, width, height);
         const homography = this.findHomography(landmarks, targets);
-        const deskewed = await original.warpPerspectiveAsync(homography, new cv.Size(width, height));
+        const deskewed = await original.warpPerspectiveAsync(
+            homography,
+            new cv.Size(width, height)
+        );
 
-        yield new PaperFormData(metadata, deskewed);
+        yield new PaperFormData(file, metadata, deskewed);
     }
 
     /**
      * Find relevant landmarks in a given picture (QR-code, aruco markers, page corners).
-     * 
+     *
      * @param image Image to search
      * @param qrLandmarks QR-Code landmarks
      */
-    private async findLandmarks(image: cv.Mat, qrLandmarks: Record<string, cv.Point2>): Promise<Record<string, cv.Point2>> {
+    private async findLandmarks(
+        image: cv.Mat,
+        qrLandmarks: Record<string, cv.Point2>
+    ): Promise<Record<string, cv.Point2>> {
         const aruco = await findArucoMarkers(image);
         const points = { ...aruco, ...qrLandmarks };
 
@@ -93,24 +101,29 @@ export default class PaperExtractorPlugin implements ExtractorPlugin {
         return points;
     }
 
-    private computeTargets(metadata: PaperMetadata, w: number, h: number): Record<string, cv.Point2> {
+    private computeTargets(
+        metadata: PaperMetadata,
+        w: number,
+        h: number
+    ): Record<string, cv.Point2> {
         const targets: Record<string, cv.Point2> = {};
 
-        metadata
-            .questions
-            .forEach(md => {
-                const rect = md.boundaries;
+        metadata.questions.forEach(md => {
+            const rect = md.boundaries;
 
-                targets[`${md.id}-tl`] = new cv.Point2(rect.x * w, rect.y * h);
-                targets[`${md.id}-tr`] = new cv.Point2((rect.x + rect.w) * w, rect.y * h);
-                targets[`${md.id}-bl`] = new cv.Point2(rect.x * w, (rect.y + rect.h) * h);
-                targets[`${md.id}-br`] = new cv.Point2((rect.x + rect.w) * w, (rect.y + rect.h) * h);
-            });
+            targets[`${md.id}-tl`] = new cv.Point2(rect.x * w, rect.y * h);
+            targets[`${md.id}-tr`] = new cv.Point2((rect.x + rect.w) * w, rect.y * h);
+            targets[`${md.id}-bl`] = new cv.Point2(rect.x * w, (rect.y + rect.h) * h);
+            targets[`${md.id}-br`] = new cv.Point2((rect.x + rect.w) * w, (rect.y + rect.h) * h);
+        });
 
         return targets;
     }
 
-    private findHomography(landmarksObj: Record<string, cv.Point2>, targetObj: Record<string, cv.Point2>): cv.Mat {
+    private findHomography(
+        landmarksObj: Record<string, cv.Point2>,
+        targetObj: Record<string, cv.Point2>
+    ): cv.Mat {
         const landmarks = [];
         const targets = [];
         for (let key in targetObj) {
@@ -123,4 +136,3 @@ export default class PaperExtractorPlugin implements ExtractorPlugin {
         return cv.findHomography(landmarks, targets).homography;
     }
 }
-
