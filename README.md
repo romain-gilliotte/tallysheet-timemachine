@@ -1,7 +1,5 @@
 WARNING: THIS LIBRARY IS A WORK IN PROGRESS, AND IT NOT PUBLISHED IN NPM YET.
 
-<br/>
-
 # Tallysheet Time Machine
 
 <!-- ![Test suite](https://github.com/romain-gilliotte/tallysheet-timemachine/workflows/Test%20suite/badge.svg)
@@ -22,11 +20,6 @@ It is a set of NodeJS library which enables generation and parsing/image recogni
 Tallysheet Time Machine was written as a companion library for [Monitool](https://github.com/romain-gilliotte/monitool), a full-featured open-source monitoring platform targeted at humanitarian organizations.
 
 By reducing the amount of work needed to perform computer-less data collection, it aims to make the process easier on situations where online/offline form builders cannot be used, and paper and Excel are the only ways.
-
-Other projects:
-
--   None known
--   ... PR to add yours!
 
 # Installation
 
