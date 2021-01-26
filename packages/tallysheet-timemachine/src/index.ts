@@ -7,10 +7,13 @@ import {
     CellValue,
     Disagregation,
     DisagregationElement,
+    DisagregationMetadata,
     File,
+    FormMetadata,
     Json,
     MetadataLoaderFn,
     Question,
+    QuestionMetadata,
     Site,
 } from './types';
 
@@ -24,4 +27,7 @@ export {
     MetadataLoaderFn,
     Question,
     Site,
+    DisagregationMetadata,
+    QuestionMetadata,
+    FormMetadata,
 };

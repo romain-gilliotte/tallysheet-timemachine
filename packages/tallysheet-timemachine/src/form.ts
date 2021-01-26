@@ -1,5 +1,5 @@
 import QuestionList from './question-list';
-import { Json } from './types';
+import { FormMetadata } from './types';
 
 export default abstract class Form {
     protected _questionList: QuestionList;
@@ -23,5 +23,16 @@ export default abstract class Form {
     }
 
     abstract generateOutput(): Promise<Buffer>;
-    abstract generateMetadata(): Promise<Json>;
+
+    async generateMetadata(): Promise<FormMetadata> {
+        return {
+            questions: this.questionList.questions.map(q => ({
+                id: q.id,
+                disagregations: q.disagregations.map(d => ({
+                    id: d.id,
+                    elements: d.elements.map(e => e.id),
+                })),
+            })),
+        };
+    }
 }

@@ -1,10 +1,14 @@
+WARNING: THIS LIBRARY IS A WORK IN PROGRESS, AND IT NOT PUBLISHED IN NPM YET.
+
+<br/>
+
 # Tallysheet Time Machine
 
-![Test suite](https://github.com/romain-gilliotte/tallysheet-timemachine/workflows/Test%20suite/badge.svg)
+<!-- ![Test suite](https://github.com/romain-gilliotte/tallysheet-timemachine/workflows/Test%20suite/badge.svg)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/tallysheet-timemachine)
 ![NPM](https://img.shields.io/npm/l/tallysheet-timemachine)
 ![npm](https://img.shields.io/npm/v/tallysheet-timemachine)
-![npm](https://img.shields.io/npm/dt/tallysheet-timemachine)
+![npm](https://img.shields.io/npm/dt/tallysheet-timemachine) -->
 
 Tallysheet Time Machine brings back paper and Excel tallysheets from the past with some improvements!
 
@@ -66,12 +70,12 @@ Forms are created with the `TallySheet` class.
 Convenience methods are available to add questions, disagregations and elements.
 
 ```javascript
-const questionList = new QuestionList('123');
-questionList.addSite('1', 'Paris');
-questionList.addQuestion('1', 'Number of consultations');
-questionList.addDisagregation('1', '1', 'Age');
-questionList.addDisagregationElement('1', '1', '1', 'Under 12');
-questionList.addDisagregationElement('1', '1', '2', '12 and more');
+const questionList = new QuestionList('ql1');
+questionList.addSite('s1', 'Paris');
+questionList.addQuestion('q1', 'Number of consultations');
+questionList.addDisagregation('q1', 'd1', 'Age');
+questionList.addDisagregationElement('q1', 'd1', 'de1', 'Under 12');
+questionList.addDisagregationElement('q1', 'd1', 'de2', '12 and more');
 
 // Will generate the following tally sheet:
 //                             ____________________
@@ -131,8 +135,8 @@ const extractor = new FormExtractor(
     ],
 
     // Form loader (you are responsible for storing the metadata between generation and data extraction)
-    templateId => {
-        const templateFile = fs.readFileSync(`formMetadata-${page.templateId}.json`);
+    formId => {
+        const templateFile = fs.readFileSync(`formMetadata-${page.formId}.json`);
         const template = PaperFormTemplate.fromObject(JSON.parse(templateFile));
         return template;
     }
@@ -142,12 +146,6 @@ const extractor = new FormExtractor(
 const zip = fs.readFileSync('./stackOfFormsPhotosAndExcel.zip');
 
 for await (let formData of extractor.process(zip)) {
-    // The identifier of the template and the page number are stored in the form
-    // (either in the QR-code or in hidden data in the Excel files).
-    formData.type; // "paper" or "excel"
-    formData.form; // Reference to the form, which helps us perform the OCR.
-    formData.pageNo; // Always 1 for Excel, can be any number for multipage paper forms.
-
     // Access a reprojected image (only for paperforms) or the data directly (only for excel).
     formData.getImage(); // => Buffer containing the reprojected image.
     formData.getData(); // => { [questionId]: [1, 2, 3, 4, ...] }

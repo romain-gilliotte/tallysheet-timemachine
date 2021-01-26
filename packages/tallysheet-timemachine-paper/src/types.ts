@@ -1,24 +1,17 @@
+import { FormMetadata } from 'tallysheet-timemachine';
 
 export type Rect = {
-    pageNo: number|null,
-    x: number,
-    y: number,
-    w: number,
-    h: number
+    pageNo: number | null;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
 };
 
-export type DisagregationMetadata = { id: string, elements: string[] };
-
-export type QuestionMetadata = {
-    id: string,
-    disagregations: DisagregationMetadata[],
-    boundaries: Rect
+export type PaperMetadata = FormMetadata & {
+    orientation: Orientation;
+    boundaries: Rect[];
 };
-
-export type PaperMetadata = {
-    questions: QuestionMetadata[];
-    orientation: Orientation
-}
 
 export type Orientation = 'portrait' | 'landscape';
 

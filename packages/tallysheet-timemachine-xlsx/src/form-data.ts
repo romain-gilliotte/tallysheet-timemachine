@@ -7,14 +7,15 @@ export default class ExcelFormData extends FormData {
     ws: xlsx.WorkBook;
 
     constructor(file: File, metadata: ExcelMetadata, ws: xlsx.WorkBook) {
-        super(file);
+        super(file, metadata);
 
         this.metadata = metadata;
         this.ws = ws;
     }
 
     async getCellData(questionId: string, disagregationIds: string[]): Promise<CellValue> {
-        const questionMetadata = this.metadata.find(q => q.id == questionId);
+        
+        const questionMetadata = this.metadata.questions.find(q => q.id == questionId);
         if (!questionMetadata) throw new Error('Invalid questionId');
 
         const index = disagregationIds.reduce((m: number, id: string, index: number) => {
@@ -23,7 +24,7 @@ export default class ExcelFormData extends FormData {
             return m * elements.length + elementIndex;
         }, 0);
 
-        const cellAddress = questionMetadata.boundaries[index];
+        const cellAddress = this.metadata.boundaries[questionMetadata.id];
 
         return {
             value: this.ws.Sheets[cellAddress.sheet][cellAddress.cell].v,

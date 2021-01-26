@@ -1,8 +1,8 @@
 import ArucoMarker from 'aruco-marker';
 import PdfPrinter from 'pdfmake';
 import LayoutBuilder from 'pdfmake/src/layoutBuilder';
-import { Disagregation, Form, QuestionList } from "tallysheet-timemachine";
-import { Question } from "tallysheet-timemachine/lib/types";
+import { Disagregation, Form, QuestionList } from 'tallysheet-timemachine';
+import { Question } from 'tallysheet-timemachine/lib/types';
 import { Language, Orientation, PaperMetadata, Rect } from './types';
 
 const printer = new PdfPrinter({
@@ -31,7 +31,6 @@ const strings = Object.freeze({
 });
 
 export default class PaperForm extends Form {
-
     protected orientation: Orientation;
     protected boundaries: Record<string, Rect>;
     protected pdf: Promise<Buffer>;
@@ -63,15 +62,9 @@ export default class PaperForm extends Form {
 
     async generateMetadata(): Promise<PaperMetadata> {
         return {
+            ...(await super.generateMetadata()),
             orientation: this.orientation,
-            questions: this.questionList.questions.map(q => ({
-                id: q.id,
-                boundaries: this.boundaries[q.id],
-                disagregations: q.disagregations.map(d => ({
-                    id: d.id,
-                    elements: d.elements.map(e => e.id)
-                }))
-            }))
+            boundaries: this.boundaries,
         };
     }
 
@@ -167,11 +160,11 @@ export default class PaperForm extends Form {
         return {
             corner: {
                 pageNo: null,
-                 x: 0,
-                  y: 0,
-                   w: 1,
-                    h: 1 
-                },
+                x: 0,
+                y: 0,
+                w: 1,
+                h: 1,
+            },
             qr: {
                 pageNo: null,
                 x: (W - 20 - 84) * WR, // 84 = 4px * 21 modules
@@ -286,9 +279,7 @@ export default class PaperForm extends Form {
                     },
                 ],
             },
-            content: [
-                ...this.questionList.questions.map(this.createQuestionDocDef.bind(this)),
-            ],
+            content: [...this.questionList.questions.map(this.createQuestionDocDef.bind(this))],
         };
     }
 
